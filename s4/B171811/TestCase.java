@@ -30,11 +30,15 @@ int subByteFrequency(int start, int end);
 
 
 public class TestCase {
+  private void printException(Exception e) {
+    System.out.println("Exception occurred: " + e.toString());
+  }
   public static void main(String[] args) {
+    var test = new TestCase();
+    System.out.println("checking s4.B171811.Frequencer");
     try {
       FrequencerInterface  myObject;
       int freq;
-      System.out.println("checking s4.B171811.Frequencer");
       myObject = new s4.B171811.Frequencer();
       myObject.setSpace("Hi Ho Hi Ho".getBytes());
       myObject.setTarget("H".getBytes());
@@ -44,6 +48,89 @@ public class TestCase {
     }
     catch(Exception e) {
       System.out.println("Exception occurred: STOP");
+      e.printStackTrace();
+    }
+
+    try {
+      var myObject = new s4.B171811.Frequencer();
+      System.out.println("[check] Do not set TARGET: predicted -1");
+      System.out.println(myObject.frequency());
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    try {
+      var myObject = new s4.B171811.Frequencer();
+      System.out.println("[check] Set zero-length TARGET: predicted -1");
+      myObject.setTarget(new byte[0]);
+      System.out.println(myObject.frequency());
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    try {
+      var myObject = new s4.B171811.Frequencer();
+      System.out.println("[check] Set Target and do not set Space: predicted 0");
+      myObject.setTarget("test".getBytes());
+      System.out.println(myObject.frequency());
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    try {
+      var myObject = new s4.B171811.Frequencer();
+      System.out.println("[check] Set Target and set zero-length Space: predicted 0");
+      myObject.setTarget("test".getBytes());
+      myObject.setSpace(new byte[0]);
+      System.out.println(myObject.frequency());
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    System.out.println();
+
+    try {
+      var o = new s4.B171811.InformationEstimator();
+      System.out.println("[check] Do not set Target: predicted 0.0");
+      System.out.println(o.estimation());
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    try {
+      var o = new s4.B171811.InformationEstimator();
+      System.out.println("[check] Set zero-length Target: predicted 0.0");
+      System.out.println(o.estimation());
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    try {
+      var o = new s4.B171811.InformationEstimator();
+      System.out.println("[check] true value is infinite(Target = \"a\", Space = \"bbb\"): predicted " + Double.MAX_VALUE);
+      o.setTarget("a".getBytes());
+      o.setSpace("bbb".getBytes());
+      System.out.println(o.estimation());
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    try {
+      var o = new s4.B171811.InformationEstimator();
+      System.out.println("[check] Set Target and set zero-length Space: predicted " + Double.MAX_VALUE);
+      o.setTarget("a".getBytes());
+      o.setSpace(new byte[0]);
+      System.out.println(o.estimation());
+    }
+    catch(Exception e) {
+      test.printException(e);
     }
 
     try {

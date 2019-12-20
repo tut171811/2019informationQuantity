@@ -50,7 +50,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
     for(int p=0; p<np; p++) { // There are 2^(n-1) kinds of partitions.
       // binary representation of p forms partition.
       // for partition {"ab" "cde" "fg"}
-      // a b c d e f g   : myTarget
+      //  a b c d e f g   : myTarget
       // T F T F F T F T : partition:
       partition[0] = true; // I know that this is not needed, but..
       for(int i=0; i<myTarget.length -1;i++) {
