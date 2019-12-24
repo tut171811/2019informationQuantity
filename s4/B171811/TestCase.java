@@ -1,19 +1,11 @@
-package s4.B171811; // Please modify to s4.Bnnnnnn, where nnnnnn is your student ID. 
-import java.lang.*;
-import s4.specification.*;
-
-/*
-   interface FrequencerInterface {     // This interface provides the design for frequency counter.
+package s4.B171811; // Please modify to s4.Bnnnnnn, where nnnnnn is your student ID.  import java.lang.*;
+import s4.specification.*; /* interface FrequencerInterface {     // This interface provides the design for frequency counter.
    void setTarget(byte[]  target); // set the data to search.
    void setSpace(byte[]  space);  // set the data to be searched target from.
    int frequency(); //It return -1, when TARGET is not set or TARGET's length is zero
 //Otherwise, it return 0, when SPACE is not set or Space's length is zero
 //Otherwise, get the frequency of TAGET in SPACE
-int subByteFrequency(int start, int end);
-// get the frequency of subByte of taget, i.e target[start], taget[start+1], ... , target[end-1].
-// For the incorrect value of START or END, the behavior is undefined.
-   }
-   */
+int subByteFrequency(int start, int end); // get the frequency of subByte of taget, i.e target[start], taget[start+1], ... , target[end-1].  // For the incorrect value of START or END, the behavior is undefined.  } */
 
 /*
    package s4.specification;
@@ -53,7 +45,7 @@ public class TestCase {
 
     try {
       var myObject = new s4.B171811.Frequencer();
-      System.out.println("[check: black] Do not set TARGET: expected -1");
+      System.out.println("[check] Do not set TARGET: frequency() expect to return -1");
       System.out.println(myObject.frequency());
     }
     catch(Exception e) {
@@ -62,7 +54,7 @@ public class TestCase {
 
     try {
       var myObject = new s4.B171811.Frequencer();
-      System.out.println("[check: black] Set zero-length TARGET: expected -1");
+      System.out.println("[check] Set zero-length TARGET: frequency() expect to return -1");
       myObject.setTarget(new byte[0]);
       System.out.println(myObject.frequency());
     }
@@ -72,7 +64,7 @@ public class TestCase {
 
     try {
       var myObject = new s4.B171811.Frequencer();
-      System.out.println("[check: black] Set Target and do not set Space: expected 0");
+      System.out.println("[check] Set Target and do not set Space: frequency() expect to return 0");
       myObject.setTarget("test".getBytes());
       System.out.println(myObject.frequency());
     }
@@ -82,7 +74,7 @@ public class TestCase {
 
     try {
       var myObject = new s4.B171811.Frequencer();
-      System.out.println("[check: black] Set Target and set zero-length Space: expected 0");
+      System.out.println("[check] Set Target and set zero-length Space: frequency() expect to return 0");
       myObject.setTarget("test".getBytes());
       myObject.setSpace(new byte[0]);
       System.out.println(myObject.frequency());
@@ -91,12 +83,41 @@ public class TestCase {
       test.printException(e);
     }
 
+    // PROBLEM: int subByteFrequency(int start, int length)
+    // This method undefined.
+    // 2nd input value's name "length" is wrong. Expected "end".
+    try {
+      System.out.println("[check] Space is \"a0a0a0a\" and Target is \"a\": subByteFrequency(2, 5) expect to return 2");
+      var o = new s4.B171811.Frequencer();
+      o.setTarget("a".getBytes());
+      o.setSpace("a0a0a0a".getBytes());
+      System.out.println(o.subByteFrequency(2, 5));
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    // PROBLEM: int frequency()
+    // When target length >= 2, it is possible that ArrayIndexOutOfBoundsException happens in "mySpace[start+i]"
+    try {
+      System.out.println("[check] it is possible that ArrayIndexOutOfBoundsExceptiono happens in frequency()");
+      var o = new s4.B171811.Frequencer();
+      o.setTarget("12".getBytes());
+      o.setSpace("00001".getBytes());
+      System.out.println(o.frequency());
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    // MEMO: When Space is "AAAA" and Target is "AA", frequency() expect to return 3.
+
     System.out.println();
 
+    System.out.println("checking s4.B171811.InformationEstimator");
     try {
       InformationEstimatorInterface myObject;
       double value;
-      System.out.println("checking s4.B171811.InformationEstimator");
       myObject = new s4.B171811.InformationEstimator();
       myObject.setSpace("3210321001230123".getBytes());
       myObject.setTarget("0".getBytes());
@@ -118,7 +139,7 @@ public class TestCase {
 
     try {
       var o = new s4.B171811.InformationEstimator();
-      System.out.println("[check: black] Do not set Target: expected 0.0");
+      System.out.println("[check] Do not set Target: expected 0.0");
       System.out.println(o.estimation());
     }
     catch(Exception e) {
@@ -127,7 +148,7 @@ public class TestCase {
 
     try {
       var o = new s4.B171811.InformationEstimator();
-      System.out.println("[check: black] Set zero-length Target: expected 0.0");
+      System.out.println("[check] Set zero-length Target: expected 0.0");
       System.out.println(o.estimation());
     }
     catch(Exception e) {
@@ -136,7 +157,7 @@ public class TestCase {
 
     try {
       var o = new s4.B171811.InformationEstimator();
-      System.out.println("[check: white] true value is infinite(Target = \"a\", Space = \"bbb\"): expected " + Double.MAX_VALUE);
+      System.out.println("[check] true value is infinite(Target = \"a\", Space = \"bbb\"): expected " + Double.MAX_VALUE);
       o.setTarget("a".getBytes());
       o.setSpace("bbb".getBytes());
       System.out.println(o.estimation());
@@ -147,7 +168,7 @@ public class TestCase {
 
     try {
       var o = new s4.B171811.InformationEstimator();
-      System.out.println("[check: black] Set Target and set zero-length Space: expected " + Double.MAX_VALUE);
+      System.out.println("[check] Set Target and set zero-length Space: expected " + Double.MAX_VALUE);
       o.setTarget("a".getBytes());
       o.setSpace(new byte[0]);
       System.out.println(o.estimation());
