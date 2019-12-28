@@ -86,7 +86,7 @@ public class TestCase {
 
     // PROBLEM: int subByteFrequency(int start, int length)
     // This method undefined.
-    // 2nd input value's name "length" is wrong. Expected "end".
+    // 2nd input value's name "length" is wrong. Expect "end".
     try {
       System.out.println("[check] target is \"a\" and space is \"a0a0a0a\": subByteFrequency(2, 5) expect to return 2");
       var o = new s4.B171811.Frequencer();
@@ -112,7 +112,7 @@ public class TestCase {
     }
 
     // PROBLEM: int frequency()
-    // When target length > space length, throws ArrayIndexOutOfBoundsExceptions in mySpace[start+i].
+    // When target length > space length, it throws ArrayIndexOutOfBoundsExceptions in mySpace[start+i].
     try {
       System.out.println("[check] target length > space length (target is \"a1234\", space is \"a12\"): frequency() expect to return 0");
       var o = new s4.B171811.Frequencer();
