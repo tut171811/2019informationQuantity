@@ -1,5 +1,6 @@
 package s4.B171811; // Please modify to s4.Bnnnnnn, where nnnnnn is your student ID.  import java.lang.*;
-import s4.specification.*; /* interface FrequencerInterface {     // This interface provides the design for frequency counter.
+import s4.specification.*; 
+/* interface FrequencerInterface {     // This interface provides the design for frequency counter.
    void setTarget(byte[]  target); // set the data to search.
    void setSpace(byte[]  space);  // set the data to be searched target from.
    int frequency(); //It return -1, when TARGET is not set or TARGET's length is zero
@@ -87,7 +88,7 @@ public class TestCase {
     // This method undefined.
     // 2nd input value's name "length" is wrong. Expected "end".
     try {
-      System.out.println("[check] Space is \"a0a0a0a\" and Target is \"a\": subByteFrequency(2, 5) expect to return 2");
+      System.out.println("[check] target is \"a\" and space is \"a0a0a0a\": subByteFrequency(2, 5) expect to return 2");
       var o = new s4.B171811.Frequencer();
       o.setTarget("a".getBytes());
       o.setSpace("a0a0a0a".getBytes());
@@ -100,10 +101,23 @@ public class TestCase {
     // PROBLEM: int frequency()
     // When target length >= 2, it is possible that ArrayIndexOutOfBoundsException happens in "mySpace[start+i]"
     try {
-      System.out.println("[check] it is possible that ArrayIndexOutOfBoundsExceptiono happens in frequency()");
+      System.out.println("[check] target length >= 2 (target is \"12\", space is \"00001\": frequency() expect to return 0");
       var o = new s4.B171811.Frequencer();
       o.setTarget("12".getBytes());
       o.setSpace("00001".getBytes());
+      System.out.println(o.frequency());
+    }
+    catch(Exception e) {
+      test.printException(e);
+    }
+
+    // PROBLEM: int frequency()
+    // When target length > space length, throws ArrayIndexOutOfBoundsExceptions in mySpace[start+i].
+    try {
+      System.out.println("[check] target length > space length (target is \"a1234\", space is \"a12\"): frequency() expect to return 0");
+      var o = new s4.B171811.Frequencer();
+      o.setTarget("a1234".getBytes());
+      o.setSpace("a12".getBytes());
       System.out.println(o.frequency());
     }
     catch(Exception e) {
