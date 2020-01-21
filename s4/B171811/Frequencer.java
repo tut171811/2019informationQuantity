@@ -62,10 +62,6 @@ public class Frequencer implements FrequencerInterface{
     // if suffix_i > suffix_j, it returns 1   
     // if suffix_i < suffix_j, it returns -1  
     // if suffix_i = suffix_j, it returns 0;   
-
-    //TODO
-    // i, jの引数チェック
-
     // ここにコードを記述せよ 
     if(this.mySpace.length - 1 < i) {
       return -1;
@@ -171,12 +167,6 @@ public class Frequencer implements FrequencerInterface{
     // "Ho"      =     "H"     : "H" is in the head of suffix "Ho"
     //
     // ここに比較のコードを書け 
-    
-    //引数チェック
-    if(i < 0 || this.suffixArray.length < i || j > k || j < 0 || this.myTarget.length < k) {
-      throw new IllegalArgumentException();
-    }
-
     // System.out.println(this.suffixArray[6] + ": " + (char)this.mySpace[this.suffixArray[6]]);
     // System.out.println("target: " + (char)this.myTarget[0]);
     int n = 0;
@@ -349,57 +339,6 @@ public class Frequencer implements FrequencerInterface{
     catch(Exception e) {
       System.out.println("STOP");
       e.printStackTrace();
-    }
-
-    try {
-      var f = new Frequencer();
-      f.setSpace("t".getBytes());
-      f.setTarget("test".getBytes());
-      System.out.println("check input value of targetCompare: i is too big");
-      System.out.println(f.targetCompare(10, 0, 0));
-    }
-    catch(Exception e) {
-      System.out.println(e.toString());
-    }
-    try {
-      var f = new Frequencer();
-      f.setSpace("t".getBytes());
-      f.setTarget("test".getBytes());
-      System.out.println("check input value of targetCompare: i is too small");
-      System.out.println(f.targetCompare(-1, 0, 0));
-    }
-    catch(Exception e) {
-      System.out.println(e.toString());
-    }
-    try {
-      var f = new Frequencer();
-      f.setSpace("t".getBytes());
-      f.setTarget("test".getBytes());
-      System.out.println("check input value of targetCompare: j > k");
-      System.out.println(f.targetCompare(0, 3, 2));
-    }
-    catch(Exception e) {
-      System.out.println(e.toString());
-    }
-    try {
-      var f = new Frequencer();
-      f.setSpace("t".getBytes());
-      f.setTarget("test".getBytes());
-      System.out.println("check input value of targetCompare: j is too small");
-      System.out.println(f.targetCompare(0, -1, 0));
-    }
-    catch(Exception e) {
-      System.out.println(e.toString());
-    }
-    try {
-      var f = new Frequencer();
-      f.setSpace("t".getBytes());
-      f.setTarget("test".getBytes());
-      System.out.println("check input value of targetCompare: k is too big");
-      System.out.println(f.targetCompare(0, 0, 10));
-    }
-    catch(Exception e) {
-      System.out.println(e.toString());
     }
   }
 }
