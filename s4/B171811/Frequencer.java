@@ -173,7 +173,7 @@ public class Frequencer implements FrequencerInterface{
     while(true) {
       if(this.mySpace[this.suffixArray[i] + n] == this.myTarget[j + n]) {
         n++;
-        if(n < k - j + 1) {
+        if(n < k - j/* + 1*/) {
           if(n < this.mySpace.length - this.suffixArray[i]) {
             continue;
           }
@@ -294,10 +294,10 @@ public class Frequencer implements FrequencerInterface{
     A:o Hi Ho                     
     */
 
-      // frequencerObject.setTarget("H".getBytes());
-      // int result = frequencerObject.frequency();
-      // System.out.print("Freq = "+ result+" ");
-      // if(4 == result) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+      frequencerObject.setTarget("H".getBytes());
+      int result = frequencerObject.frequency();
+      System.out.print("Freq = "+ result+" ");
+      if(4 == result) { System.out.println("OK"); } else {System.out.println("WRONG"); }
       
       //                                         
       // ****  Please write code to check subByteStartIndex, and subByteEndIndex
@@ -315,25 +315,25 @@ public class Frequencer implements FrequencerInterface{
       frequencerObject = new Frequencer();
       frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
       frequencerObject.setTarget("izooHiHzHo ".getBytes());
-      System.out.println("targetCompare(9, 0, 0) -> return  1: " + frequencerObject.targetCompare(9, 0, 0));  // "o" > "i"
-      System.out.println("targetCompare(9, 1, 1) -> return -1: " + frequencerObject.targetCompare(9, 1, 1));  // "o" < "z"
-      System.out.println("targetCompare(9, 2, 2) -> return  0: " + frequencerObject.targetCompare(9, 2, 2));  // "o" = "o"
-      System.out.println("targetCompare(9, 2, 3) -> return -1: " + frequencerObject.targetCompare(9, 2, 3));  // "o" < "oo"
-      System.out.println("targetCompare(5, 4, 5) -> return  1: " + frequencerObject.targetCompare(5, 4, 5));  // "Ho" > "Hi"
-      System.out.println("targetCompare(5, 6, 7) -> return -1: " + frequencerObject.targetCompare(5, 6, 7));  // "Ho" < "Hz"
-      System.out.println("targetCompare(5, 8, 9) -> return  0: " + frequencerObject.targetCompare(5, 8, 9));  // "Ho" = "Ho"
-      System.out.println("targetCompare(5, 8, 10)-> return -1: " + frequencerObject.targetCompare(5, 8, 10)); // "Ho"  "Ho "
-      System.out.println("targetCompare(5, 8, 8) -> return  0: " + frequencerObject.targetCompare(5, 8, 8));  // "Ho" = "H"
+      System.out.println("\"o\" > \"i\"    -> return  1: " + frequencerObject.targetCompare(9, 0, 1));  // "o" > "i"
+      System.out.println("\"o\" < \"z\"    -> return -1: " + frequencerObject.targetCompare(9, 1, 2));  // "o" < "z"
+      System.out.println("\"o\" = \"o\"    -> return  0: " + frequencerObject.targetCompare(9, 2, 3));  // "o" = "o"
+      System.out.println("\"o\" < \"oo\"   -> return -1: " + frequencerObject.targetCompare(9, 2, 4));  // "o" < "oo"
+      System.out.println("\"Ho\" > \"Hi\"  -> return  1: " + frequencerObject.targetCompare(5, 4, 6));  // "Ho" > "Hi"
+      System.out.println("\"Ho\" < \"Hz\"  -> return -1: " + frequencerObject.targetCompare(5, 6, 8));  // "Ho" < "Hz"
+      System.out.println("\"Ho\" = \"Ho\"  -> return  0: " + frequencerObject.targetCompare(5, 8, 10));  // "Ho" = "Ho"
+      System.out.println("\"Ho\" < \"Ho \" -> return -1: " + frequencerObject.targetCompare(5, 8, 11)); // "Ho"  "Ho "
+      System.out.println("\"Ho\" = \"H\"   -> return  0: " + frequencerObject.targetCompare(5, 8, 9));  // "Ho" = "H"
 
-      System.out.println("targetCompare(6, 0, 0) -> return  -1: " + frequencerObject.targetCompare(6, 0, 0));  // "Ho" = "H"
+      System.out.println("\"Ho\" = \"H\"   -> return  -1: " + frequencerObject.targetCompare(6, 0, 1));  // "Ho" = "H"
 
       // ----- subByteStartIndex -----
-      System.out.println("subByteStartIndex(8, 9) -> return  5: " + frequencerObject.subByteStartIndex(8, 9));
-      System.out.println("subByteStartIndex(8, 10)-> return  6: " + frequencerObject.subByteStartIndex(8, 10));
+      System.out.println("subByteStartIndex(\"Ho\") -> return  5: " + frequencerObject.subByteStartIndex(8, 10));
+      System.out.println("subByteStartIndex(\"Ho \")-> return  6: " + frequencerObject.subByteStartIndex(8, 11));
 
       // ----- subByteEndIndex -----
-      System.out.println("subByteEndIndex(8, 9) -> return  7: " + frequencerObject.subByteEndIndex(8, 9));
-      System.out.println("subByteEndIndex(0, 0) -> return  9: " + frequencerObject.subByteEndIndex(0, 0));
+      System.out.println("subByteEndIndex(\"Ho\") -> return  7: " + frequencerObject.subByteEndIndex(8, 10));
+      System.out.println("subByteEndIndex(\"i\")  -> return  9: " + frequencerObject.subByteEndIndex(0, 1));
 
     }
     catch(Exception e) {
