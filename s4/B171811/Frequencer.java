@@ -173,7 +173,7 @@ public class Frequencer implements FrequencerInterface{
     while(true) {
       if(this.mySpace[this.suffixArray[i] + n] == this.myTarget[j + n]) {
         n++;
-        if(n < k - j/* + 1*/) {
+        if(n < k - j) {
           if(n < this.mySpace.length - this.suffixArray[i]) {
             continue;
           }
@@ -325,7 +325,7 @@ public class Frequencer implements FrequencerInterface{
       System.out.println("\"Ho\" < \"Ho \" -> return -1: " + frequencerObject.targetCompare(5, 8, 11)); // "Ho"  "Ho "
       System.out.println("\"Ho\" = \"H\"   -> return  0: " + frequencerObject.targetCompare(5, 8, 9));  // "Ho" = "H"
 
-      System.out.println("\"Ho\" = \"H\"   -> return  -1: " + frequencerObject.targetCompare(6, 0, 1));  // "Ho" = "H"
+      System.out.println("\"Ho Hi Ho\" = \"i\"   -> return  -1: " + frequencerObject.targetCompare(6, 0, 1));  // "Ho" = "H"
 
       // ----- subByteStartIndex -----
       System.out.println("subByteStartIndex(\"Ho\") -> return  5: " + frequencerObject.subByteStartIndex(8, 10));
