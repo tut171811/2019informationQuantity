@@ -323,7 +323,7 @@ public class Frequencer implements FrequencerInterface{
       System.out.println("\"Ho\" < \"Hz\"  -> return -1: " + frequencerObject.targetCompare(5, 6, 8));  // "Ho" < "Hz"
       System.out.println("\"Ho\" = \"Ho\"  -> return  0: " + frequencerObject.targetCompare(5, 8, 10));  // "Ho" = "Ho"
       System.out.println("\"Ho\" < \"Ho \" -> return -1: " + frequencerObject.targetCompare(5, 8, 11)); // "Ho"  "Ho "
-      System.out.println("\"Ho\" = \"H\"   -> return  0: " + frequencerObject.targetCompare(5, 8, 9));  // "Ho" = "H"
+      System.out.println("\"Ho\" < \"H\"   -> return  0: " + frequencerObject.targetCompare(5, 8, 9));  // "Ho" = "H"
 
       System.out.println("\"Ho Hi Ho\" = \"i\"   -> return  -1: " + frequencerObject.targetCompare(6, 0, 1));  // "Ho" = "H"
 
