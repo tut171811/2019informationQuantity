@@ -19,7 +19,8 @@ public class InformationEstimator implements InformationEstimatorInterface{
   // Code to tet, *warning: This code condtains intentional problem*
   byte [] myTarget; // data to compute its information quantity
   byte [] mySpace;  // Sample space to compute the probability
-  FrequencerInterface myFrequencer;  // Object for counting frequency
+  FrequencerInterface myFrequencer;  // Object for counting subByteFrequency
+  double [] iqMem; // array of information quantity
 
   byte [] subBytes(byte [] x, int start, int end) {
     // corresponding to substring of String for  byte[] ,
@@ -29,9 +30,32 @@ public class InformationEstimator implements InformationEstimatorInterface{
     return result;
   }
 
+  private void initIqMem() {
+    iqMem = new double[(int)Math.pow(2, this.myTarget.length - 1)];
+    for(int i = 0; i < this.myTarget.length; i++) {
+      iqMem[i] = f(myFrequencer.subByteFrequency(0, i+1));
+    }
+  }
+
+  // public int COUNT = 0;
   // IQ: information quantity for a count,  -log2(count/sizeof(space))
-  double iq(int freq) {
+  private double f(int freq) {
+    // COUNT++;
     return  - Math.log10((double) freq / (double) mySpace.length)/ Math.log10((double) 2.0);
+  }
+
+  private double iq(int first, int end) {
+    if(first != 0) {
+      double min = f(myFrequencer.subByteFrequency(first, end));
+      for(int i = 1; i < end - 1; i++) {
+        var tmp = iq(0, i) + f(myFrequencer.subByteFrequency(i, end));
+        if(min > tmp) min = tmp;
+      }
+      return min;
+    }
+    else {
+      return iqMem[end-1];
+    }
   }
 
   public void setTarget(byte [] target) { myTarget = target;}
@@ -41,46 +65,9 @@ public class InformationEstimator implements InformationEstimatorInterface{
   }
 
   public double estimation(){
-    boolean [] partition = new boolean[myTarget.length+1];
-    int np;
-    np = 1<<(myTarget.length-1);
-    // System.out.println("np="+np+" length="+myTarget.length);
-    double value = Double.MAX_VALUE; // value = mininimum of each "value1".
-
-    for(int p=0; p<np; p++) { // There are 2^(n-1) kinds of partitions.
-      // binary representation of p forms partition.
-      // for partition {"ab" "cde" "fg"}
-      //  a b c d e f g   : myTarget
-      // T F T F F T F T : partition:
-      partition[0] = true; // I know that this is not needed, but..
-      for(int i=0; i<myTarget.length -1;i++) {
-        partition[i+1] = (0 !=((1<<i) & p));
-      }
-      partition[myTarget.length] = true;
-
-      // Compute Information Quantity for the partition, in "value1"
-      // value1 = IQ(#"ab")+IQ(#"cde")+IQ(#"fg") for the above example
-      double value1 = (double) 0.0;
-      int end = 0;;
-      int start = end;
-      while(start<myTarget.length) {
-        // System.out.write(myTarget[end]);
-        end++;;
-        while(partition[end] == false) { 
-          // System.out.write(myTarget[end]);
-          end++;
-        }
-        // System.out.print("("+start+","+end+")");
-        myFrequencer.setTarget(subBytes(myTarget, start, end));
-        value1 = value1 + iq(myFrequencer.frequency());
-        start = end;
-      }
-      // System.out.println(" "+ value1);
-
-      // Get the minimal value in "value"
-      if(value1 < value) value = value1;
-    }
-    return value;
+    this.myFrequencer.setTarget(this.myTarget);
+    initIqMem();
+    return iq(0, this.myTarget.length);
   }
 
   public static void main(String[] args) {
@@ -100,6 +87,14 @@ public class InformationEstimator implements InformationEstimatorInterface{
     myObject.setTarget("00".getBytes());
     value = myObject.estimation();
     System.out.println(">00 "+value);
+
+    myObject = new InformationEstimator();
+    myObject.setSpace("123456789123456789123456789123456789123456789123456789123456789".getBytes());
+    myObject.setTarget("123456789".getBytes());
+    value = myObject.estimation();
+    System.out.println(">123456789 "+value);
+
+    // System.out.println("count: " + myObject.COUNT);
   }
 }
 
