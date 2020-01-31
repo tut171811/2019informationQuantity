@@ -98,7 +98,7 @@ public class Frequencer implements FrequencerInterface{
     //                                            
     // ここに、int suffixArrayをソートするコードを書け。
     // 　順番はsuffixCompareで定義されるものとする。    
-    for(int i = 1; i < this.suffixArray.length - 1; i++) {
+    for(int i = 1; i < this.suffixArray.length; i++) {
       for(int k = 0; k < this.suffixArray.length - i; k++) {
         if(suffixCompare(suffixArray[k], suffixArray[k+1]) == 1) {
           //swap
@@ -116,7 +116,8 @@ public class Frequencer implements FrequencerInterface{
   // ここから、指定する範囲のコードは変更してはならない。
 
   public void setTarget(byte [] target) {
-    myTarget = target; if(myTarget.length>0) targetReady = true;
+    myTarget = target;
+    if(myTarget.length>0) targetReady = true;
   }
 
   public int frequency() {
