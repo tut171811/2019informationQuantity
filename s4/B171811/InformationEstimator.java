@@ -20,7 +20,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
   byte [] myTarget; // data to compute its information quantity
   byte [] mySpace;  // Sample space to compute the probability
   FrequencerInterface myFrequencer;  // Object for counting subByteFrequency
-  private double [] iqMem = null; // array of information quantity
+  private double [] iqMem; // array of information quantity
 
   byte [] subBytes(byte [] x, int start, int end) {
     // corresponding to substring of String for  byte[] ,
