@@ -20,7 +20,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
   byte [] myTarget; // data to compute its information quantity
   byte [] mySpace;  // Sample space to compute the probability
   FrequencerInterface myFrequencer;  // Object for counting subByteFrequency
-  double [] iqMem; // array of information quantity
+  private double [] iqMem; // array of information quantity
 
   byte [] subBytes(byte [] x, int start, int end) {
     // corresponding to substring of String for  byte[] ,
@@ -31,9 +31,13 @@ public class InformationEstimator implements InformationEstimatorInterface{
   }
 
   private void initIqMem() {
-    iqMem = new double[(int)Math.pow(2, this.myTarget.length - 1)];
+    this.iqMem = new double[(int)Math.pow(2, this.myTarget.length - 1)];
     for(int i = 0; i < this.myTarget.length; i++) {
-      iqMem[i] = f(myFrequencer.subByteFrequency(0, i+1));
+      this.iqMem[i] = f(myFrequencer.subByteFrequency(0, i+1));
+      for(int k = 1; k < i - 1; k++) {
+        var tmp = this.iqMem[k] + f(myFrequencer.subByteFrequency(k, i+1));
+        if(this.iqMem[i] > tmp) this.iqMem[i] = tmp;
+      }
     }
   }
 
@@ -42,20 +46,6 @@ public class InformationEstimator implements InformationEstimatorInterface{
   private double f(int freq) {
     // COUNT++;
     return  - Math.log10((double) freq / (double) mySpace.length)/ Math.log10((double) 2.0);
-  }
-
-  private double iq(int first, int end) {
-    if(first != 0) {
-      double min = f(myFrequencer.subByteFrequency(first, end));
-      for(int i = 1; i < end - 1; i++) {
-        var tmp = iq(0, i) + f(myFrequencer.subByteFrequency(i, end));
-        if(min > tmp) min = tmp;
-      }
-      return min;
-    }
-    else {
-      return iqMem[end-1];
-    }
   }
 
   public void setTarget(byte [] target) { myTarget = target;}
@@ -67,7 +57,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
   public double estimation(){
     this.myFrequencer.setTarget(this.myTarget);
     initIqMem();
-    return iq(0, this.myTarget.length);
+    return this.iqMem[this.myTarget.length - 1];
   }
 
   public static void main(String[] args) {
