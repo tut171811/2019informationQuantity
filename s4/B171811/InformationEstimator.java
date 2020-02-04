@@ -31,7 +31,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
   }
 
   private void initIqMem() {
-    this.iqMem = new double[(int)Math.pow(2, this.myTarget.length - 1)];
+    this.iqMem = new double[this.myTarget.length];
     for(int i = 0; i < this.myTarget.length; i++) {
       this.iqMem[i] = f(myFrequencer.subByteFrequency(0, i+1));
       for(int k = 1; k < i - 1; k++) {
