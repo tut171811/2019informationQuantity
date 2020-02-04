@@ -20,7 +20,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
   byte [] myTarget; // data to compute its information quantity
   byte [] mySpace;  // Sample space to compute the probability
   FrequencerInterface myFrequencer;  // Object for counting subByteFrequency
-  private double [] iqMem; // array of information quantity
+  private double [] iqMem = null; // array of information quantity
 
   byte [] subBytes(byte [] x, int start, int end) {
     // corresponding to substring of String for  byte[] ,
@@ -31,7 +31,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
   }
 
   private void initIqMem() {
-    this.iqMem = new double[this.myTarget.length];
+    if(this.iqMem == null) this.iqMem = new double[this.myTarget.length];
     for(int i = 0; i < this.myTarget.length; i++) {
       this.iqMem[i] = f(myFrequencer.subByteFrequency(0, i+1));
       for(int k = 1; k < i - 1; k++) {
@@ -48,10 +48,14 @@ public class InformationEstimator implements InformationEstimatorInterface{
     return  - Math.log10((double) freq / (double) mySpace.length)/ Math.log10((double) 2.0);
   }
 
-  public void setTarget(byte [] target) { myTarget = target;}
+  public void setTarget(byte [] target) { 
+    myTarget = target;
+    this.iqMem = null;
+  }
   public void setSpace(byte []space) { 
     myFrequencer = new Frequencer();
-    mySpace = space; myFrequencer.setSpace(space); 
+    mySpace = space;
+    myFrequencer.setSpace(space); 
   }
 
   public double estimation(){
@@ -87,8 +91,3 @@ public class InformationEstimator implements InformationEstimatorInterface{
     // System.out.println("count: " + myObject.COUNT);
   }
 }
-
-
-
-
-
