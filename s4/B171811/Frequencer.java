@@ -222,13 +222,32 @@ public class Frequencer implements FrequencerInterface{
     // if target_start_end is "Ho ", it will return 6.                
     //                                                                          
     // ここにコードを記述せよ。                                                 
-    int n;
-    for(n = 0; n < this.suffixArray.length; n++) {
-      if(targetCompare(n, start, end) == 0) {
-        break;
+    int head = -1;
+    int n = this.suffixArray.length;
+    while(n - head > 1) {
+      int medium = ((n - head) / 2) + head;
+      // System.out.println(medium);
+      var comp = targetCompare(medium, start, end);
+      if(comp > 0) {
+        n = medium;
+      }
+      else if(comp < 0) {
+        head = medium;
+        // n -= medium;
+      }
+      else {
+        n = medium;
       }
     }
     return n;
+
+    // int n;
+    // for(n = 0; n < this.suffixArray.length; n++) {
+    //   if(targetCompare(n, start, end) == 0) {
+    //     break;
+    //   }
+    // }
+    // return n;
   }
 
   private int subByteEndIndex(int start, int end) {
