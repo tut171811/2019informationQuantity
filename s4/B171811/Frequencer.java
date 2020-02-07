@@ -1,5 +1,6 @@
 package s4.B171811;
 import java.lang.*;
+import java.util.function.*;
 import s4.specification.*;
 
 
@@ -222,32 +223,9 @@ public class Frequencer implements FrequencerInterface{
     // if target_start_end is "Ho ", it will return 6.                
     //                                                                          
     // ここにコードを記述せよ。                                                 
-    int head = -1;
-    int n = this.suffixArray.length;
-    while(n - head > 1) {
-      int medium = ((n - head) / 2) + head;
-      // System.out.println(medium);
-      var comp = targetCompare(medium, start, end);
-      if(comp > 0) {
-        n = medium;
-      }
-      else if(comp < 0) {
-        head = medium;
-        // n -= medium;
-      }
-      else {
-        n = medium;
-      }
-    }
-    return n;
-
-    // int n;
-    // for(n = 0; n < this.suffixArray.length; n++) {
-    //   if(targetCompare(n, start, end) == 0) {
-    //     break;
-    //   }
-    // }
-    // return n;
+    return binarySearch(-1, this.suffixArray.length, (m) -> {
+      return targetCompare(m, start, end) >= 0;
+    });
   }
 
   private int subByteEndIndex(int start, int end) {
@@ -274,15 +252,33 @@ public class Frequencer implements FrequencerInterface{
     // if target_start_end is"i", it will return 9 for "Hi Ho Hi Ho".    
     //                                                                   
     //ここにコードを記述せよ                                           
-    int n;
-    for(n = subByteStartIndex(start, end); n < this.suffixArray.length; n++) {
-      if(targetCompare(n, start, end) != 0) {
-        break;
-      }
-    }
-    return n;
+    return binarySearch(subByteStartIndex(start, end), this.suffixArray.length, (m) -> {
+      return targetCompare(m, start, end) > 0;
+    });
+    // int n;
+    // for(n = subByteStartIndex(start, end); n < this.suffixArray.length; n++) {
+    //   if(targetCompare(n, start, end) != 0) {
+    //     break;
+    //   }
+    // }
+    // return n;
   }
 
+  // p is true -> next range is [head - medium]
+  // p is false -> next range is [medium - tail]
+  private int binarySearch(int head, int tail, Predicate<Integer> p) {
+    while(tail - head > 1) {
+      int medium = ((tail - head) / 2) + head;
+      if(p.test(medium)) {
+        tail = medium;
+      }
+      else {
+        head = medium;
+      }
+    }
+    return tail;
+
+  }
 
   // Suffix Arrayを使ったプログラムのホワイトテストは、
   // privateなメソッドとフィールドをアクセスすることが必要なので、
