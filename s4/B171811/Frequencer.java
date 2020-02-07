@@ -1,5 +1,6 @@
 package s4.B171811;
 import java.lang.*;
+import java.util.function.*;
 import s4.specification.*;
 
 
@@ -98,15 +99,30 @@ public class Frequencer implements FrequencerInterface{
     //                                            
     // ここに、int suffixArrayをソートするコードを書け。
     // 　順番はsuffixCompareで定義されるものとする。    
-    for(int i = 1; i < this.suffixArray.length; i++) {
-      for(int k = 0; k < this.suffixArray.length - i; k++) {
-        if(suffixCompare(suffixArray[k], suffixArray[k+1]) == 1) {
-          //swap
-          var tmp = this.suffixArray[k];
-          this.suffixArray[k] = this.suffixArray[k+1];
-          this.suffixArray[k+1] = tmp;
-        }
+    quickSort(this.suffixArray, 0, this.suffixArray.length);
+  }
+
+  private int partition(int[] A, int pivot, int n) {
+    int i = pivot;
+    int baseValue = A[pivot];
+    for(int k = i + 1; k < n; k++) {
+      if(suffixCompare(baseValue, A[k]) >= 0) {
+        i++;
+        int tmp = A[k];
+        A[k] = A[i];
+        A[i] = tmp;
       }
+    }
+    A[pivot] = A[i];
+    A[i] = baseValue;
+    return i;
+  }
+
+  private void quickSort(int[] A, int pivot, int n) {
+    if(pivot < n) {
+      int divide = partition(A, pivot, n);
+      quickSort(A, pivot, divide);
+      quickSort(A, divide + 1, n);
     }
   }
 
@@ -222,13 +238,9 @@ public class Frequencer implements FrequencerInterface{
     // if target_start_end is "Ho ", it will return 6.                
     //                                                                          
     // ここにコードを記述せよ。                                                 
-    int n;
-    for(n = 0; n < this.suffixArray.length; n++) {
-      if(targetCompare(n, start, end) == 0) {
-        break;
-      }
-    }
-    return n;
+    return binarySearch(-1, this.suffixArray.length, (m) -> {
+      return targetCompare(m, start, end) >= 0;
+    });
   }
 
   private int subByteEndIndex(int start, int end) {
@@ -255,15 +267,25 @@ public class Frequencer implements FrequencerInterface{
     // if target_start_end is"i", it will return 9 for "Hi Ho Hi Ho".    
     //                                                                   
     //ここにコードを記述せよ                                           
-    int n;
-    for(n = subByteStartIndex(start, end); n < this.suffixArray.length; n++) {
-      if(targetCompare(n, start, end) != 0) {
-        break;
-      }
-    }
-    return n;
+    return binarySearch(subByteStartIndex(start, end), this.suffixArray.length, (m) -> {
+      return targetCompare(m, start, end) > 0;
+    });
   }
 
+  // p is true -> next range is [head - medium]
+  // p is false -> next range is [medium - tail]
+  private int binarySearch(int head, int tail, Predicate<Integer> p) {
+    while(tail - head > 1) {
+      int medium = ((tail - head) / 2) + head;
+      if(p.test(medium)) {
+        tail = medium;
+      }
+      else {
+        head = medium;
+      }
+    }
+    return tail;
+  }
 
   // Suffix Arrayを使ったプログラムのホワイトテストは、
   // privateなメソッドとフィールドをアクセスすることが必要なので、
@@ -279,6 +301,11 @@ public class Frequencer implements FrequencerInterface{
     try {
       Frequencer frequencerObject;
       frequencerObject = new Frequencer();
+      frequencerObject.setSpace("3210321001230123".getBytes());
+      frequencerObject.setTarget("0".getBytes());
+      System.out.println("-1: " +  frequencerObject.suffixCompare(3, 6));
+      frequencerObject.printSuffixArray();
+
       frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
       frequencerObject.printSuffixArray(); // you may use this line for DEBUG
       /* Example from "Hi Ho Hi Ho"    
