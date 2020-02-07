@@ -31,13 +31,16 @@ public class InformationEstimator implements InformationEstimatorInterface{
   }
 
   private void initIqMem() {
-    if(this.iqMem == null) this.iqMem = new double[this.myTarget.length];
-    for(int i = 0; i < this.myTarget.length; i++) {
-      this.iqMem[i] = f(myFrequencer.subByteFrequency(0, i+1));
-      for(int k = 1; k < i - 1; k++) {
-        var tmp = this.iqMem[k] + f(myFrequencer.subByteFrequency(k, i+1));
-        if(this.iqMem[i] > tmp) this.iqMem[i] = tmp;
+    if(this.iqMem == null) {
+      double[] array = new double[this.myTarget.length];
+      for(int i = 0; i < this.myTarget.length; i++) {
+        array[i] = f(myFrequencer.subByteFrequency(0, i+1));
+        for(int k = 1; k < i - 1; k++) {
+          var tmp = array[k] + f(myFrequencer.subByteFrequency(k, i+1));
+          if(array[i] > tmp) array[i] = tmp;
+        }
       }
+      this.iqMem = array;
     }
   }
 

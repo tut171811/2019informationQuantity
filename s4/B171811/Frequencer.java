@@ -100,16 +100,6 @@ public class Frequencer implements FrequencerInterface{
     // ここに、int suffixArrayをソートするコードを書け。
     // 　順番はsuffixCompareで定義されるものとする。    
     quickSort(this.suffixArray, 0, this.suffixArray.length);
-    // for(int i = 1; i < this.suffixArray.length; i++) {
-    //   for(int k = 0; k < this.suffixArray.length - i; k++) {
-    //     if(suffixCompare(suffixArray[k], suffixArray[k+1]) == 1) {
-    //       //swap
-    //       var tmp = this.suffixArray[k];
-    //       this.suffixArray[k] = this.suffixArray[k+1];
-    //       this.suffixArray[k+1] = tmp;
-    //     }
-    //   }
-    // }
   }
 
   private int partition(int[] A, int pivot, int n) {
@@ -295,7 +285,6 @@ public class Frequencer implements FrequencerInterface{
       }
     }
     return tail;
-
   }
 
   // Suffix Arrayを使ったプログラムのホワイトテストは、
