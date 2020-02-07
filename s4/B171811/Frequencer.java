@@ -99,15 +99,40 @@ public class Frequencer implements FrequencerInterface{
     //                                            
     // ここに、int suffixArrayをソートするコードを書け。
     // 　順番はsuffixCompareで定義されるものとする。    
-    for(int i = 1; i < this.suffixArray.length; i++) {
-      for(int k = 0; k < this.suffixArray.length - i; k++) {
-        if(suffixCompare(suffixArray[k], suffixArray[k+1]) == 1) {
-          //swap
-          var tmp = this.suffixArray[k];
-          this.suffixArray[k] = this.suffixArray[k+1];
-          this.suffixArray[k+1] = tmp;
-        }
+    quickSort(this.suffixArray, 0, this.suffixArray.length);
+    // for(int i = 1; i < this.suffixArray.length; i++) {
+    //   for(int k = 0; k < this.suffixArray.length - i; k++) {
+    //     if(suffixCompare(suffixArray[k], suffixArray[k+1]) == 1) {
+    //       //swap
+    //       var tmp = this.suffixArray[k];
+    //       this.suffixArray[k] = this.suffixArray[k+1];
+    //       this.suffixArray[k+1] = tmp;
+    //     }
+    //   }
+    // }
+  }
+
+  private int partition(int[] A, int pivot, int n) {
+    int i = pivot;
+    int baseValue = A[pivot];
+    for(int k = i + 1; k < n; k++) {
+      if(suffixCompare(baseValue, A[k]) >= 0) {
+        i++;
+        int tmp = A[k];
+        A[k] = A[i];
+        A[i] = tmp;
       }
+    }
+    A[pivot] = A[i];
+    A[i] = baseValue;
+    return i;
+  }
+
+  private void quickSort(int[] A, int pivot, int n) {
+    if(pivot < n) {
+      int divide = partition(A, pivot, n);
+      quickSort(A, pivot, divide);
+      quickSort(A, divide + 1, n);
     }
   }
 
@@ -255,13 +280,6 @@ public class Frequencer implements FrequencerInterface{
     return binarySearch(subByteStartIndex(start, end), this.suffixArray.length, (m) -> {
       return targetCompare(m, start, end) > 0;
     });
-    // int n;
-    // for(n = subByteStartIndex(start, end); n < this.suffixArray.length; n++) {
-    //   if(targetCompare(n, start, end) != 0) {
-    //     break;
-    //   }
-    // }
-    // return n;
   }
 
   // p is true -> next range is [head - medium]
@@ -294,6 +312,11 @@ public class Frequencer implements FrequencerInterface{
     try {
       Frequencer frequencerObject;
       frequencerObject = new Frequencer();
+      frequencerObject.setSpace("3210321001230123".getBytes());
+      frequencerObject.setTarget("0".getBytes());
+      System.out.println("-1: " +  frequencerObject.suffixCompare(3, 6));
+      frequencerObject.printSuffixArray();
+
       frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
       frequencerObject.printSuffixArray(); // you may use this line for DEBUG
       /* Example from "Hi Ho Hi Ho"    
