@@ -35,8 +35,8 @@ public class InformationEstimator implements InformationEstimatorInterface{
       double[] array = new double[this.myTarget.length];
       for(int i = 0; i < this.myTarget.length; i++) {
         array[i] = f(myFrequencer.subByteFrequency(0, i+1));
-        for(int k = 1; k < i - 1; k++) {
-          var tmp = array[k] + f(myFrequencer.subByteFrequency(k, i+1));
+        for(int k = 0; k < i; k++) {
+          var tmp = array[k] + f(myFrequencer.subByteFrequency(k+1, i+1));
           if(array[i] > tmp) array[i] = tmp;
         }
       }
