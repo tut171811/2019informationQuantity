@@ -62,6 +62,8 @@ public class InformationEstimator implements InformationEstimatorInterface{
   }
 
   public double estimation(){
+    if(this.myTarget == null || this.myTarget.length == 0) return 0;
+    if(this.mySpace.length == 0) return Double.MAX_VALUE;
     this.myFrequencer.setTarget(this.myTarget);
     initIqMem();
     return this.iqMem[this.myTarget.length - 1];
